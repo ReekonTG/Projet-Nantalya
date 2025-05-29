@@ -50,7 +50,7 @@
         </table>
     </div>
 
-    <h3 class="mt-5 text-center text-secondary">📋 Historique des Informations Enregistrées</h3>
+    <h3 class="mt-5 text-center text-secondary">📋 Liste des Détenteurs</h3>
 
     <!-- Tableau des informations enregistrées -->
     <div class="table-responsive shadow-lg">

@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <style>
@@ -138,7 +139,9 @@
                     </ul>
                 </li>
 
-                <li><a href="/types"><i class="fas fa-list"></i>Types</a></li>
+                <li>
+                    <a href="{{ route('liste.globale') }}"><i class="fas fa-list"></i>Liste</a>
+                </li>
                 <li><a href="{{ route('inventaire.index') }}"><i class="fas fa-clipboard-list"></i>Inventaire</a></li>
             </ul>
         </nav>

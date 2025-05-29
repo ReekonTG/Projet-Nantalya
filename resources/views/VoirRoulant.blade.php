@@ -91,10 +91,12 @@
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success btn-lg">Enregistrer</button>
                 </div>
-            </form>
-            <a href="{{ route('roulants.detenteurs', $roulant->id) }}" class="btn btn-info mt-3">
-    Afficher les détenteurs
-    </a>
+            
+            <div class="text-center mt-4">
+                <a href="{{ route('roulants.detenteurs', $roulant->id) }}" class="btn btn-info mt-3">
+                Afficher les détenteurs</a>
+            </div>
+    </form>
 </div>
 
         <!-- Formulaire de suivi du roulant -->
@@ -144,11 +146,12 @@
                     </div>
                 </div>
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-warning btn-lg">Ajouter Suivi</button>
+                    <button type="submit" class="btn btn-success btn-lg">Ajouter Suivi</button>
                 </div>
-                <!-- Bouton "Afficher Suivi" -->
-<a href="{{ route('suiviRoulant.index', $roulant->id) }}" class="btn btn-info mt-3">Afficher Suivi</a>
-
+                <div class="text-center mt-4">
+                
+                    <a href="{{ route('suiviRoulant.index', $roulant->id) }}" class="btn btn-info mt-3">Afficher Suivi</a>
+                </div>
             </form>
         </div>
     </div>

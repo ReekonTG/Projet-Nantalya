@@ -63,8 +63,17 @@
             </div>
             <div class="col-md-3">
                 <label for="nom" class="form-label">Nom</label>
-                <input type="text" id="nom" name="nom" class="form-control" required>
+                <select id="nom" name="nom" class="form-control" required>
+                    <option value="">  </option>
+                    @foreach($personnels as $personnel)
+                    <option value="{{ $personnel->nom }} {{ $personnel->prenom }}">
+                    {{ $personnel->nom }} {{ $personnel->prenom }}
+                    </option>
+                    @endforeach
+                </select>
             </div>
+
+
             <div class="col-md-3">
                 <label for="organisations" class="form-label">Organisations</label>
                 <input type="text" id="organisations" name="organisations" class="form-control" required>
@@ -93,16 +102,19 @@
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-success btn-lg">Enregistrer</button>
         </div>
+        <div class="text-center mt-4">
+            <a href="{{ route('detenteur-info.show', $materiel->id) }}" class="btn btn-info btn-lg">📄 Fiche</a>
+        </div>
     </form>
 </div>
-<div class="text-center mt-4">
-    <a href="{{ route('informatique.fiche', $materiel->id) }}" class="btn btn-info btn-lg">📄 Fiche</a>
-</div>
+
 @if(session('error'))
-    <div class="alert alert-danger mt-3">
-        {{ session('error') }}
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+        <strong>⚠️ Erreur :</strong> {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
+
 
      <!-- Formulaire d'ajout d'inventaire -->
      <div class="mt-5 shadow-lg p-4 bg-light rounded">
@@ -153,11 +165,10 @@
 
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-success btn-lg">Enregistrer</button>
-        </div>
+        </div>   
         <div class="text-center mt-4">
-    <button type="submit" class="btn btn-success btn-lg">Enregistrer</button>
-    <a href="{{ route('suiviinfo.show', ['suiviinfo' => $materiel->id]) }}" class="btn btn-primary btn-lg">Voir Suivi</a>
-
+            <a href="{{ route('suiviinfo.show', ['suiviinfo' => $materiel->id]) }}" class="btn btn-primary btn-lg">Voir Suivi</a>
+        </div>
     </form>
 </div>
 

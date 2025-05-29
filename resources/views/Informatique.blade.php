@@ -75,12 +75,12 @@
                         <input type="text" class="form-control shadow-sm" id="bailleurs" name="bailleurs">
                     </div>
                     <div class="col-md-4">
-    <label for="nature" class="form-label">
-        <i class="fas fa-leaf"></i> Nature
-    </label>
-    <input type="number" class="form-control shadow-sm" id="nature" name="nature" required>
-    <div class="invalid-feedback">Veuillez entrer un nombre.</div>
-</div>
+                        <label for="nature" class="form-label">
+                            <i class="fas fa-leaf"></i> Nature
+                        </label>
+                        <input type="number" class="form-control shadow-sm" id="nature" name="nature" required>
+                        <div class="invalid-feedback">Veuillez entrer un nombre.</div>
+                    </div>
                     <div class="col-md-4">
                         <label for="situations" class="form-label">
                             <i class="fas fa-map-marker-alt"></i> Situations
@@ -96,11 +96,11 @@
                             <i class="fas fa-users"></i> Utilisateurs
                         </label>
                         <select class="form-control shadow-sm" id="utilisateurs" name="utilisateurs" required>
-    <option value="" disabled selected>Choisissez un utilisateur</option>
-    @foreach($personnels as $personnel)
-        <option value="{{ $personnel->prenom }}">{{ $personnel->prenom }}</option>
-    @endforeach
-</select>
+                            <option value="" disabled selected>Choisissez un utilisateur</option>
+                            @foreach($personnels as $personnel)
+                                <option value="{{ $personnel->prenom }}">{{ $personnel->prenom }}</option>
+                            @endforeach
+                        </select>
 
                     </div>
                     <div class="col-md-4">
@@ -139,7 +139,7 @@
                     <button type="submit" class="btn btn-warning btn-lg shadow-sm" style="background: linear-gradient(135deg, #ff9a9e, #fad0c4); border: none;">
                         <i class="fas fa-save"></i> Enregistrer
                     </button>
-                    <a href="{{ route('ListeInfo') }}" class="btn btn-primary btn-lg shadow-sm" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border: none;">
+                    <a href="{{ route('listeInfo') }}" class="btn btn-primary btn-lg shadow-sm" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border: none;">
                         <i class="fas fa-list"></i> Liste des Matériels Informatiques
                     </a>
                 </div>

@@ -100,11 +100,11 @@
                             <i class="fas fa-users"></i> Utilisateurs
                         </label>
                         <select class="form-control shadow-sm" id="utilisateurs" name="utilisateurs" required>
-    <option value="" disabled selected>Choisissez un utilisateur</option>
-    @foreach($personnels as $personnel)
-        <option value="{{ $personnel->prenom }}">{{ $personnel->prenom }}</option>
-    @endforeach
-</select>
+                            <option value="" disabled selected>Choisissez un utilisateur</option>
+                            @foreach($personnels as $personnel)
+                            <option value="{{ $personnel->prenom }}">{{ $personnel->prenom }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-4">
                         <label for="repere" class="form-label">

@@ -61,9 +61,16 @@
                     <input type="date" id="date" name="date" class="form-control" required>
                 </div>
                 <div class="col-md-3">
-                    <label for="nom" class="form-label">Nom</label>
-                    <input type="text" id="nom" name="nom" class="form-control" required>
-                </div>
+                <label for="nom" class="form-label">Nom</label>
+                <select id="nom" name="nom" class="form-control" required>
+                    <option value="">  </option>
+                    @foreach($personnels as $personnel)
+                    <option value="{{ $personnel->nom }} {{ $personnel->prenom }}">
+                    {{ $personnel->nom }} {{ $personnel->prenom }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
                 <div class="col-md-3">
                     <label for="organisme" class="form-label">Organisations</label>
                     <input type="text" id="organisme" name="organisme" class="form-control">
@@ -92,13 +99,18 @@
             <div class="text-center mt-4">
                 <button type="submit" class="btn btn-success btn-lg">Enregistrer</button>
             </div>
+            <div class="text-center mt-4">
+                <a href="{{ route('materiels.fin', ['id' => $materiel->id]) }}" class="btn btn-danger btn-lg">Liste</a>
+            </div>
         </form>
     </div>
-   <!-- Bouton "Fin" -->
-<div class="text-center mt-4">
-    <a href="{{ route('materiels.fin', ['id' => $materiel->id]) }}" class="btn btn-danger btn-lg">Liste Fin</a>
-</div>
 
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+        <strong>⚠️ Erreur :</strong> {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 
     <!-- Bouton retour -->
     <div class="text-center mt-4">
@@ -106,58 +118,62 @@
     </div>
 <!-- Formulaire de suivi des matériels -->
 <!-- Formulaire d'ajout de suivi -->
-<div class="mt-4">
-    <h4 class="text-center text-secondary">Ajouter un Suivi</h4>
-    <form action="{{ route('suivimateriels.store', $materiel->id) }}" method="POST">
+<div class="mt-5 shadow-lg p-4 bg-light rounded">
+    <h4 class="text-center text-secondary mb-4">📋 Ajouter un Suivi</h4>
+    <form action="{{ route('suivimateriels.store1', $materiel->id) }}" method="POST">
         @csrf
-        <div class="form-group">
+    <div class="row g-3">
+        <div class="col-md-4">
             <label for="date_suivi">Date de Suivi</label>
             <input type="date" name="date_suivi" id="date_suivi" class="form-control" required>
         </div>
 
-        <div class="form-group">
+        <div class="col-md-4">
             <label for="nom">Nom</label>
             <input type="text" name="nom" id="nom" class="form-control" required>
         </div>
 
-        <div class="form-group">
+        <div class="col-md-4">
             <label for="organisme">Organisme</label>
             <input type="text" name="organisme" id="organisme" class="form-control" required>
         </div>
 
-        <div class="form-group">
+        <div class="col-md-4">
             <label for="contact">Contact</label>
             <input type="text" name="contact" id="contact" class="form-control" required>
         </div>
 
-        <div class="form-group">
+        <div class="col-md-4">
             <label for="nombre">Nombre</label>
             <input type="number" name="nombre" id="nombre" class="form-control" required>
         </div>
 
-        <div class="form-group">
+        <div class="col-md-4">
             <label for="situation">Situation</label>
             <input type="text" name="situation" id="situation" class="form-control" required>
         </div>
 
-        <div class="form-group">
+        <div class="col-md-4">
             <label for="constation">Constation</label>
             <input type="text" name="constation" id="constation" class="form-control" required>
         </div>
 
-        <div class="form-group">
+        <div class="col-md-4">
             <label for="date_retour">Date de Retour (facultatif)</label>
             <input type="date" name="date_retour" id="date_retour" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="col-md-4">
             <label for="observation">Observation</label>
             <textarea name="observation" id="observation" rows="4" class="form-control" required></textarea>
         </div>
-
+    </div>
+    <div class="text-center mt-4">
         <button type="submit" class="btn btn-success btn-block mt-4">Ajouter le Suivi</button>
+    </div>
+    <div class="text-center mt-4">
         <a href="{{ route('suivi.materiel', $materiel->id) }}" class="btn btn-primary btn-block mt-2">Afficher les Suivis</a>
-
+    </div>
     </form>
 </div>
 </div>

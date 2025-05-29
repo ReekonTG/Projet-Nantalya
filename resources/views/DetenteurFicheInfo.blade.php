@@ -64,20 +64,20 @@
                     <td>{{ $detenteur->observation ?? ''}}</td>
                     <td>
         <!-- Button to trigger the modal with data attributes for editing -->
-        <button type="button" class="btn btn-primary btnEdit" 
-        data-bs-toggle="modal" 
-        data-bs-target="#modaleModifierDetenteur"
-        data-id="{{ $detenteur->id }}" 
-        data-nom="{{ $detenteur->nom }}"
-        data-organisations="{{ $detenteur->organisations }}"
-        data-contact="{{ $detenteur->contact }}"
-        data-nombre="{{ $detenteur->nombre }}"
-        data-situation="{{ $detenteur->situation }}"
-        data-date="{{ $detenteur->date }}"
-        data-date_retour="{{ $detenteur->date_retour }}"
-        data-observation="{{ $detenteur->observation }}">
-    Modifier
-</button>
+            <button type="button" class="btn btn-primary btnEdit" 
+                data-bs-toggle="modal" 
+                data-bs-target="#modaleModifierDetenteur"
+                data-id="{{ $detenteur->id }}" 
+                data-nom="{{ $detenteur->nom }}"
+                data-organisations="{{ $detenteur->organisations }}"
+                data-contact="{{ $detenteur->contact }}"
+                data-nombre="{{ $detenteur->nombre }}"
+                data-situation="{{ $detenteur->situation }}"
+                data-date="{{ $detenteur->date }}"
+                data-date_retour="{{ $detenteur->date_retour }}"
+                data-observation="{{ $detenteur->observation }}">
+                Modifier
+            </button>
                     </td>
                 </tr>
                 @endforeach
@@ -87,7 +87,7 @@
 
     <!-- Bouton retour -->
     <div class="text-center mt-4">
-        <a href="{{ route('ListeInfo') }}" class="btn btn-primary btn-lg">Retour à la liste</a>
+        <a href="{{ route('listeInfo') }}" class="btn btn-primary btn-lg">Retour à la liste</a>
     </div>
 </div>
 <!-- Modale Bootstrap pour modification -->

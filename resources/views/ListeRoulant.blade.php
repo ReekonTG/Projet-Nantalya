@@ -16,7 +16,7 @@
             <i class="fas fa-print"></i> Imprimer
         </button>
         <!-- Zone de recherche -->
-        <div class="mb-4">
+        <div class="mb-4"> 
             <input type="text" id="searchInput" class="form-control shadow-sm" placeholder="Rechercher un roulant..." style="border-radius: 8px;">
         </div>
 

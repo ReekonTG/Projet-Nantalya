@@ -15,6 +15,7 @@ use App\Http\Controllers\SituationAnnuelController;
 use App\Http\Controllers\SuiviRoulantController;
 use App\Http\Controllers\SuiviInfoController;
 use App\Http\Controllers\AcceuilController;
+use App\Http\Controllers\ListeGlobalController;
 use App\Models\Materiel;
 use App\Models\SuiviInfo;
 use App\Models\SuiviMateriel;
@@ -62,11 +63,17 @@ Route::post('/materiels.store', [MaterielController::class, 'store'])->name('mat
 
 
 
+// Route pour afficher la vue 'Liste'
 Route::get('/liste', function () {
     return view('Liste');
-})->name('liste');
+})->name('liste.view');
 
-Route::get('/liste', [MaterielController::class, 'index'])->name('liste');
+// Route pour afficher la liste des matériels avec le contrôleur MaterielController
+Route::get('/materiels/liste', [MaterielController::class, 'liste'])->name('materiels.liste');
+
+Route::get('/liste', [MaterielController::class, 'index'])->name('materiels.liste');
+Route::get('/materiels/liste', [MaterielController::class, 'liste'])->name('materiels.liste');
+
 
 Route::get('/tiroir', [MaterielController::class, 'showTiroirForm'])->name('tiroir');
 
@@ -91,16 +98,18 @@ Route::get('/materiels/liste', [MaterielController::class, 'liste'])->name('list
 Route::get('/materiels/view', [MaterielController::class, 'view'])->name('materiels.view');
 
 
+Route::get('/materiels/create', [MaterielController::class, 'listePersonnels'])->name('materiels.create');
+
 Route::get('/ListeInfo', function () {
     return view('Liste');
-})->name('ListeInfo');
+})->name('ListeInfo.view');
 
 Route::post('/materiels', [InformatiqueController::class, 'store'])->name('materiels');
 
 
 Route::get('/listeInfo', [InformatiqueController::class, 'index'])->name('listeInfo');
 
-Route::get('/ListeInfo', [InformatiqueController::class, 'index'])->name('ListeInfo');
+//Route::get('/ListeInfo', [InformatiqueController::class, 'index'])->name('ListeInfo');
 
 Route::get('/materiels/{id}/edit', [InformatiqueController::class, 'edit'])->name('materiels.edit');
 
@@ -112,7 +121,7 @@ Route::delete('/informatique/{informatique}', [InformatiqueController::class, 'd
 Route::get('/informatique', [InformatiqueController::class, 'index'])->name('informatique.index');
 //Route::get('/materiels/{id}', [InformatiqueController::class, 'show'])->name('materiels.show');
 Route::get('/informatique/{id}/voir', [InformatiqueController::class, 'show'])->name('informatique.show');
-Route::get('/liste-info', [InformatiqueController::class, 'index'])->name('listeInfo');
+Route::get('/liste-info', [InformatiqueController::class, 'index'])->name('listeInfo.other');
 Route::resource('suiviinfo', SuiviInfoController::class);
 
 //Route::get('/materiels.show', function () {
@@ -169,7 +178,9 @@ Route::get('/roulants/{id}/detenteurs', [DetenteurRoulantController::class, 'ind
 // Route pour enregistrer les détenteurs du roulant
 Route::post('/roulants/{roulant}/detenteurs', [DetenteurRoulantController::class, 'store'])->name('detenteurRoulant.store');
 
-Route::post('/detenteurRoulant/{roulant}', [DetenteurRoulantController::class, 'store'])->name('detenteurRoulant.store');
+// Route pour ajouter un détenteur avec un autre contexte
+Route::post('/detenteurRoulant/{roulant}', [DetenteurRoulantController::class, 'store'])->name('detenteurRoulant.alternateStore');
+
 
 // Route pour afficher la fiche du roulant et ses détenteurs
 Route::get('/roulants/{id}/fiche', [DetenteurRoulantController::class, 'show'])->name('roulants.fiche');
@@ -207,30 +218,33 @@ Route::get('/informatique', function () {
 })->name('informatique');
 
 
-Route::post('/materiel/{materiel}/informations', [DetenteurInformatiqueController::class, 'store'])->name('informatique.ajouterInformations');
 
+// Route 1 - Ajouter des informations sur un matériel informatique
+Route::post('/materiel/{materiel}/informations', [DetenteurInformatiqueController::class, 'store'])->name('informatique.ajouterInformationsMateriel');
 
+// Route 2 - Ajouter des informations sur un autre type d'informatique
 Route::post('/informatique/{id}/ajouter-informations', [DetenteurInfoController::class, 'store'])->name('informatique.ajouterInformations');
-Route::get('/informatique/{id}/fiche', [DetenteurInfoController::class, 'show'])->name('informatique.fiche');
+
+Route::get('/informatique/{id}/fiche', [DetenteurInfoController::class, 'show'])->name('informatique.fiche1');
 
 Route::get('/informatique/{id}/inventaire', [InventaireInfoController::class, 'show'])->name('informatique.inventaire');
 Route::post('/informatique/{id}/inventaire', [InventaireInfoController::class, 'store'])->name('informatique.inventaire.ajouter');
 
 Route::get('/materiel/{materiel_id}/inventaire', [InventaireInfoController::class, 'fiche'])->name('inventaire.fiche');
 Route::get('/inventaire/{id}/edit', [InventaireInfoController::class, 'edit'])->name('inventaire.edit');
-Route::post('/inventaire/{id}/update', [InventaireInfoController::class, 'update'])->name('inventaire.update');
+Route::post('/inventaire/{id}/update', [InventaireInfoController::class, 'update'])->name('inventaire.update.post.id');
 
 
 
 
-Route::get('/inventaire/{materielId}', [InventaireInfoController::class, 'showInventaireFicheInfo'])->name('inventaire.show');
+Route::get('/inventaire/{materielId}', [InventaireInfoController::class, 'showInventaireFicheInfo'])->name('inventaire.showMateriel');
 Route::post('/inventaire/{materielId}/store', [InventaireInfoController::class, 'store'])->name('inventaire.store');
-Route::get('/inventaire/{inventaireId}/edit', [InventaireInfoController::class, 'edit'])->name('inventaire.edit');
-Route::post('/inventaire/{inventaireId}/update', [InventaireInfoController::class, 'update'])->name('inventaire.update');
-Route::delete('/inventaire/{inventaireId}/delete', [InventaireInfoController::class, 'destroy'])->name('inventaire.destroy');
+Route::get('/inventaire/{inventaireId}/edit', [InventaireInfoController::class, 'edit'])->name('inventaire.edit.inventaireId');
+Route::post('/inventaire/{inventaireId}/update', [InventaireInfoController::class, 'update'])->name('inventaire.update.post.inventaireId');
+Route::delete('/inventaire/{inventaireId}/delete', [InventaireInfoController::class, 'destroy'])->name('inventaire.destroyWithDeleteSuffix');
 Route::get('/materiel/{materiel_id}/inventaire', [InventaireInfoController::class, 'fiche'])->name('inventaire.fiche');
-Route::get('/inventaire/{id}/edit', [InventaireInfoController::class, 'edit'])->name('inventaire.edit');
-Route::put('/inventaire/{id}', [InventaireInfoController::class, 'update'])->name('inventaire.update');
+Route::get('/inventaire/{id}/edit', [InventaireInfoController::class, 'edit'])->name('inventaire.edit.autre1');
+Route::put('/inventaire/{id}', [InventaireInfoController::class, 'update'])->name('inventaire.update.put.id');
 Route::get('/materiels/liste-info', [InformatiqueController::class, 'listeInfo'])->name('materiels.listeInfo');
 
 
@@ -242,16 +256,11 @@ Route::put('/detenteur-info/{id}', [DetenteurInfoController::class, 'update'])->
 Route::delete('/detenteur-info/{id}', [DetenteurInfoController::class, 'destroy'])->name('detenteur-info.destroy');
 
 
-
-
-
-
-
-Route::get('/informatique/{informatique_id}/inventaire', [InventaireInfoController::class, 'show'])->name('inventaire.show');
+Route::get('/informatique/{informatique_id}/inventaire', [InventaireInfoController::class, 'show'])->name('inventaire.showInformatique');
 Route::get('/informatique/{informatique_id}/inventaire/create', [InventaireInfoController::class, 'create'])->name('inventaire.create');
-Route::post('/informatique/{informatique_id}/inventaire', [InventaireInfoController::class, 'store'])->name('inventaire.store');
-Route::get('/inventaire/{id}/edit', [InventaireInfoController::class, 'edit'])->name('inventaire.edit');
-Route::put('/inventaire/{id}', [InventaireInfoController::class, 'update'])->name('inventaire.update');
+Route::post('/informatique/{informatique_id}/inventaire', [InventaireInfoController::class, 'store'])->name('informatique.inventaire.store');
+Route::get('/inventaire/{id}/edit', [InventaireInfoController::class, 'edit']) ->name('inventaire.edit.autre2');
+Route::put('/inventaire/{id}', [InventaireInfoController::class, 'update'])->name('inventaire.update.put.id.duplicate');
 Route::delete('/inventaire/{id}', [InventaireInfoController::class, 'destroy'])->name('inventaire.destroy');
 Route::get('/materiel/{materiel_id}/inventaire', [InventaireInfoController::class, 'fiche'])->name('inventaire.fiche');
 Route::get('/inventaire/ficheInfo/{id}', [InventaireInfoController::class, 'ficheInfo'])->name('inventaire.ficheInfo');
@@ -259,29 +268,24 @@ Route::get('/inventaire/ficheInfo/{id}', [InventaireInfoController::class, 'fich
 Route::get('/informatique/{id}/fiche', [InventaireInfoController::class, 'ficheInfo'])->name('inventaire.ficheInfo');
 
 
-Route::get('/informatique/{id}/fiche', [InformatiqueController::class, 'fiche'])->name('informatique.fiche');
-// Route pour afficher la fiche d'un détenteur
-Route::get('/informatique/{id}/fiche', [DetenteurInfoController::class, 'show'])->name('informatique.fiche');
+Route::get('/informatique/{id}/fiche', [InformatiqueController::class, 'fiche'])->name('informatique.fiche2');
 
 // Route pour afficher la fiche du roulant (détail)
-Route::get('/roulants/{id}/voir', [DetenteurRoulantController::class, 'show'])->name('roulants.show');
+//Route::get('/roulants/{id}/voir', [DetenteurRoulantController::class, 'show'])->name('detenteurRoulants.show');
 
 
 
-Route::get('/staff', [PersonnelController::class, 'create'])->name('staff.create');
-Route::post('/staff', [PersonnelController::class, 'store'])->name('staff.store');
+Route::get('/staff', [PersonnelController::class, 'create'])->name('staff.create1');
+Route::post('/staff', [PersonnelController::class, 'store'])->name('staff.store1');
 
 
-Route::get('/staff/create', [PersonnelController::class, 'create'])->name('staff.create'); // Afficher le formulaire
-Route::post('/staff/store', [PersonnelController::class, 'store'])->name('staff.store'); // Soumettre le formulaire
+Route::get('/staff/create', [PersonnelController::class, 'create'])->name('staff.create2'); // Afficher le formulaire
+Route::post('/staff/store', [PersonnelController::class, 'store'])->name('staff.store2'); // Soumettre le formulaire
 
 Route::get('/staff', [PersonnelController::class, 'index'])->name('staff.index');
 
 Route::resource('personnels', PersonnelController::class);
 Route::get('personnels/create', [PersonnelController::class, 'create'])->name('personnels.create');
-
-
-
 
 // Route pour afficher le formulaire de création (GET)
 Route::get('/suivis/create', [SuiviMaterielController::class, 'create'])->name('suivis.create');
@@ -291,24 +295,18 @@ Route::post('/suivis', [SuiviMaterielController::class, 'store'])->name('suivis.
 // Route pour afficher la liste des suivis
 Route::get('/suivis', [SuiviMaterielController::class, 'index'])->name('suivis.index');
 
-
 // Dans routes/web.php
 Route::get('/suivis/{id}', [SuiviMaterielController::class, 'show'])->name('suivis.show');
 
-
-
-
-
-
 // Ajoutez cette ligne dans vos fichiers de routes (par exemple, `web.php`):
-Route::post('/materiels/{id}/suivi', [MaterielController::class, 'storeSuivi'])->name('suivimateriels.store');
+Route::post('/materiels/{id}/suivi', [MaterielController::class, 'storeSuivi'])->name('suivimateriels.store1');
 Route::get('/materiels/{materiel}/suivi', [MaterielController::class, 'showSuivi'])->name('suivimateriels.show');
 
 Route::get('/materiels/{materiel}/suivi', [MaterielController::class, 'showSuivi'])
     ->name('suivimateriels.show');
 
 Route::post('/materiels/{materiel}/suivi', [MaterielController::class, 'storeSuivi'])
-    ->name('suivimateriels.store');
+    ->name('suivimateriels.store2');
 
  Route::get('/materiels/{materiel}/suivi', [MaterielController::class, 'suivi'])->name('suivi.materiel');
  Route::get('/suivimateriels/{id}/edit', [SuiviMaterielController::class, 'edit'])->name('suivimateriels.edit');
@@ -322,21 +320,9 @@ Route::put('/suivimateriels/{id}', [MaterielController::class, 'updateSuivi'])->
 Route::get('/suivimateriels', [MaterielController::class, 'index'])->name('suivimateriels.index');
 
 
-
+Route::get('/materiel/{id}/voirinfo', [InformatiqueController::class, 'show'])->name('informatique.fiche.voir');
 
 Route::get('/inventaire', [InventaireController::class, 'index'])->name('inventaire.index');
-
-
-
-
-
-// Route pour afficher la situation annuelle d'un matériel
-
-
-// Route pour afficher une situation annuelle d'un matériel spécifique
-
-
-// Route pour enregistrer une nouvelle situation annuelle
 
 
 Route::get('/situation-annuelle/{id}/{type}', [SituationAnnuelleController::class, 'show'])
@@ -350,17 +336,17 @@ Route::get('/tout-inventaire', [SituationAnnuelleController::class, 'toutInventa
 
 Route::get('export-inventaire', [InventaireController::class, 'exportInventaire']);
 Route::get('/informatique', [InformatiqueController::class, 'listePersonnels'])->name('informatique');
-Route::get('/materiels', [MaterielController::class, 'listePersonnels'])->name('materiels.index');
+Route::get('/materiels/personnels', [MaterielController::class, 'listePersonnels'])->name('materiels.personnels');
 Route::get('/roulants', [RoulantController::class, 'listePersonnels'])->name('roulants.create');
 Route::get('/acceuil', [AcceuilController::class, 'index']);
-Route::post('/detenteur/update/{id}', [DetenteurInfoController::class, 'update'])->name('detenteur.update');
+Route::post('/detenteur/update/{id}', [DetenteurInfoController::class, 'update'])->name('detenteur.update2');
 
 
 // Route pour afficher le formulaire de modification d'un détenteur
 Route::get('/detenteurs/{id}/edit', [DetenteurRoulantController::class, 'edit'])->name('detenteur.edit');
 
 // Route pour mettre à jour le détenteur
-Route::put('/detenteurs/{id}', [DetenteurRoulantController::class, 'update'])->name('detenteur.update');
+Route::put('/detenteurs/{id}', [DetenteurRoulantController::class, 'update'])->name('detenteur.update3');
 
 
 Route::get('/EditDetenteurRoulant/{id}', [DetenteurRoulantController::class, 'edit'])->name('EditDetenteurRoulant');
@@ -368,5 +354,8 @@ Route::post('/EditDetenteurRoulant/{id}/update', [DetenteurRoulantController::cl
 Route::get('/detenteur/{id}/edit', [DetenteurRoulantController::class, 'edit'])->name('detenteur.edit');
 
 Route::get('/detenteur/{id}/edit', [MaterielController::class, 'edite'])->name('detenteur.edite');
-Route::put('/detenteur/update/{id}', [MaterielController::class, 'updateFin'])->name('detenteur.update');
+Route::put('/detenteur/update/{id}', [MaterielController::class, 'updateFin'])->name('detenteur.update4');
 Route::put('/suivimateriels/{id}', [SuiviMaterielController::class, 'update'])->name('suivimateriels.update');
+
+Route::get('/liste-globale', [ListeGlobalController::class, 'index'])->name('liste.globale');
+Route::get('/liste-globale/export', [ListeGlobalController::class, 'exportInventaire'])->name('liste.globale.export');

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\DetenteurInfo;
 use App\Models\Informatique;
 use Illuminate\Http\Request;
 use App\Models\Personnel;
@@ -12,6 +12,7 @@ class InformatiqueController extends Controller
     {
         // Récupérer tous les matériels
         $materiels = Informatique::all();
+        
 
         // Retourner la vue avec les données
         return view('ListeInfo', compact('materiels'));
@@ -42,7 +43,7 @@ class InformatiqueController extends Controller
         Informatique::create($request->all());
 
         // Rediriger avec un message de succès
-        return redirect()->route('ListeInfo')->with('success', 'Le matériel a été ajouté avec succès!');
+        return redirect()->route('listeInfo')->with('success', 'Le matériel a été ajouté avec succès!');
     }
 
     // Modifier un matériel existant
@@ -94,25 +95,30 @@ class InformatiqueController extends Controller
         $informatique->delete();
 
         // Retourner à la liste avec un message de succès
-        return redirect()->route('ListeInfo')->with('success', 'Le matériel a été supprimé avec succès.');
+        return redirect()->route('listeInfo')->with('success', 'Le matériel a été supprimé avec succès.');
     }
 
     // Afficher un matériel spécifique
+    // Dans ton contrôleur (InformatiqueController par exemple)
     public function show($id)
     {
-        $materiel = Informatique::find($id);
+        $materiel = Informatique::findOrFail($id); // Chargement du matériel
+        $detenteurs = DetenteurInfo::where('info_id', $id)->get(); // Les détenteurs de ce matériel
+        $personnels = \App\Models\Personnel::all(); // Récupération de tous les personnels
 
-        if (!$materiel) {
-            return redirect()->route('ListeInfo')->with('error', 'Matériel non trouvé');
-        }
-
-        return view('VoirInfo', compact('materiel'));
+        return view('voirinfo', compact('materiel', 'detenteurs', 'personnels'));
     }
+
+    // Méthode pour afficher la fiche d'un matériel
     public function fiche($id)
-{
-    $informatique = Informatique::find($id);
-    return view('informatique.fiche', compact('informatique'));
-}
+    {
+        $materiel = Informatique::findOrFail($id); // Chargement du matériel
+        $detenteurs = DetenteurInfo::where('info_id', $id)->get(); // Les détenteurs de ce matériel
+        $personnels = Personnel::all(); // Récupération de tous les personnels
+
+        return view('voirinfo', compact('materiel', 'detenteurs', 'personnels'));
+    }
+
 
 
 public function listePersonnels()

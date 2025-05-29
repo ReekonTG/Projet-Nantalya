@@ -38,7 +38,7 @@ class PersonnelController extends Controller
         ]);
 
         // Redirection avec un message de succès
-        return redirect()->route('staff.create')->with('success', 'Le personnel a été ajouté avec succès!');
+        return redirect()->route('staff.create2')->with('success', 'Le personnel a été ajouté avec succès!');
     }
 
     public function index()
@@ -46,5 +46,32 @@ class PersonnelController extends Controller
         $personnels = Personnel::all(); // Récupère tous les personnels
         return view('ListePersonnel', compact('personnels')); // Passe la variable à la vue
     }
+    public function destroy($id)
+        {
+    // Récupérer le personnel par ID et le supprimer
+            $personnel = Personnel::findOrFail($id);
+            $personnel->delete();
+    // Redirection avec un message de succès
+        return redirect()->route('staff.index')->with('success', 'Le personnel a été supprimé avec succès!');
+    }
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+        ]);
+    
+        $personnel = Personnel::findOrFail($id);
+        $personnel->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+        ]);
+    
+        // Au lieu d'une redirection, on renvoie un JSON de succès
+        return response()->json(['success' => true, 'message' => 'Personnel mis à jour avec succès !']);
+    }
+    
+
+
     
 }

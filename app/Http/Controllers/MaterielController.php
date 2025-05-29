@@ -11,9 +11,10 @@ use App\Models\Suivimateriel; // Assurez-vous d'importer le modèle correspondan
 class MaterielController extends Controller
 {
     public function index()
-    {
-        return view('Materiels');  // Affiche le formulaire d'enregistrement
-    }
+{
+    $personnels = Personnel::all(); 
+    return view('Materiels', compact('personnels'));
+}
 
     public function liste()
     {
@@ -24,6 +25,7 @@ class MaterielController extends Controller
 
     public function store(Request $request)
     {
+        
         // Valider les données reçues
         $validated = $request->validate([
             'numero_inventaire' => 'required|string|max:255',
@@ -103,12 +105,21 @@ public function show($id)
 {
     // Récupérer les informations du matériel depuis la base de données
     $materiel = Materiel::findOrFail($id);
-    return view('Voir', compact('materiel'));
+    $personnels = \App\Models\Personnel::all(); 
+    return view('Voir', compact('materiel','personnels'));
 }
 
 // Ajouter des informations supplémentaires
 public function ajouterInformations(Request $request, $id)
 {
+    // Vérifier si le dernier détenteur a bien rempli la date de retour et l'observation
+    $dernierDetenteur = HistoriqueMateriel::where('materiel_id', $id)->latest()->first();
+
+    if ($dernierDetenteur) {
+        if (empty($dernierDetenteur->date_retour) || empty($dernierDetenteur->observation)) {
+            return redirect()->back()->with('error', 'Le matériel n\'est pas encore disponible.');
+        }
+    }
     // Validation des données
     $validatedData = $request->validate([
         'date' => 'required|date',
@@ -222,11 +233,6 @@ public function updateSuivi(Request $request, $id)
     // Redirige vers la page de suivi avec un message de succès
     return redirect()->route('suivimateriels.index')->with('success', 'Suivi mis à jour avec succès');
 }
-public function listePersonnels()
-{
-    $personnels = Personnel::all(); // Récupérer tous les personnels
-    return view('Materiels', compact('personnels')); // Passer la variable à la vue
-}
 
 public function edite($id)
 {
@@ -250,5 +256,10 @@ public function updateFin(Request $request, $id)
     $detenteur->update($request->all());
 
     return redirect()->route('materiels.index')->with('success', 'Détenteur mis à jour avec succès !');
+}
+public function listePersonnels()
+{
+    $personnels = Personnel::all(); // Récupérer tous les personnels
+    return view('Materiels', compact('personnels')); // Passer la variable à la vue
 }
 }

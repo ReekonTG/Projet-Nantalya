@@ -30,8 +30,9 @@ class DetenteurRoulantController extends Controller {
     public function show($id) {
         $roulant = Roulant::findOrFail($id);
         $detenteurs = DetenteurRoulant::where('roulant_id', $id)->get();
+        $personnels = \App\Models\Personnel::all(); // Récupérer les noms des personnels
     
-        return view('VoirRoulant', compact('roulant', 'detenteurs'));
+        return view('VoirRoulant', compact('roulant', 'detenteurs','personnels'));
     }
 
     public function inventaire() {
@@ -76,25 +77,21 @@ class DetenteurRoulantController extends Controller {
         $detenteur = DetenteurRoulant::findOrFail($id);
         return view('EditDetenteurRoulant', compact('detenteur')); // Nouvelle vue
     }
+    
 
     //Mettre à jour les informations du détenteur
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'date' => 'required|date',
-            'nom' => 'required|string|max:255',
-            'organisations' => 'nullable|string|max:255',
-            'contact' => 'nullable|string|max:255',
-            'nombre' => 'required|integer',
-            'situation' => 'nullable|string|max:255',
-            'date_retour' => 'nullable|date',
-            'observation' => 'nullable|string|max:255',
-        ]);
 
-        $detenteur = DetenteurRoulant::findOrFail($id);
-        $detenteur->update($request->all());
+        try {
+            $detenteur = DetenteurRoulant::findOrFail($id);
+            $detenteur->update($request->all());
 
-        return redirect()->route('roulants.list')->with('success', 'Détenteur mis à jour avec succès.');
+            return response()->json(['success' => 'Modification enregistrée avec succès !']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Erreur lors de la modification : ' . $e->getMessage()], 500);
+        }
+        
     }
 
 }

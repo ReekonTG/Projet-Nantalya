@@ -3,11 +3,14 @@
 @section('title', 'Ajouter un roulant')
 
 @section('content')
-    <div class="container mt-5">
-        <h2 class="text-center mb-4" style="font-family: 'Poppins', sans-serif; color: #2c3e50;">
-            <i class="fas fa-plus-circle"></i> Ajouter un nouveau Roulant
-        </h2>
-
+<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<div class="container py-5">
+    <div class="card shadow-lg" style="border-radius: 15px;">
+        <div class="card-header text-white text-center" style="background: linear-gradient(135deg, #4e73df, #224abe); border-radius: 15px 15px 0 0;">
+           <h2> <i class="fas fa-plus-circle"></i> Ajouter un nouveau Roulant</h2>
+        </div>
+        <div class="card-body" style="background-color: #f8f9fc; border-radius: 0 0 15px 15px;">
         <form action="{{ route('roulants.store') }}" method="POST" class="needs-validation" novalidate>
             @csrf
             <div class="row g-3 mb-4">
@@ -74,6 +77,7 @@
                     </label>
                     <input type="number" class="form-control shadow-sm" id="nature" name="nature" min="1" required>
                 </div>
+            </div>
                 <div class="col-md-4">
                     <label for="situations" class="form-label">
                         <i class="fas fa-map-marker-alt"></i> Situations
@@ -91,7 +95,7 @@
                     <select class="form-control shadow-sm" id="utilisateurs" name="utilisateurs" required>
                         <option value="" disabled selected>Choisissez un utilisateur</option>
                         @foreach($personnels as $personnel)
-                            <option value="{{ $personnel->id }}">{{ $personnel->prenom }} {{ $personnel->nom }}</option>
+                            <option value="{{ $personnel->id }}">{{ $personnel->prenom }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -135,6 +139,7 @@
                 </a>
             </div>
         </form>
+    </div>
     </div>
 
     <!-- Ajout de FontAwesome pour les icônes -->
@@ -199,6 +204,5 @@
             document.getElementById('cout_total').value = coutTotal.toFixed(2);  // Affichage avec deux décimales
         }
     </script>
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    
 @endsection
