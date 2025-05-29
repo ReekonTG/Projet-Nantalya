@@ -16,7 +16,7 @@ class InformatiqueController extends Controller
 
         // Retourner la vue avec les données
         return view('ListeInfo', compact('materiels'));
-    }
+    }  
 
     // Sauvegarder un nouveau matériel
     public function store(Request $request)

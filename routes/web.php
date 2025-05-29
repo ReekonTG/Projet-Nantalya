@@ -124,25 +124,6 @@ Route::get('/informatique/{id}/voir', [InformatiqueController::class, 'show'])->
 Route::get('/liste-info', [InformatiqueController::class, 'index'])->name('listeInfo.other');
 Route::resource('suiviinfo', SuiviInfoController::class);
 
-//Route::get('/materiels.show', function () {
-  //  return view('VoirInfo');
-//})->name('materiels');
-
-
-//Route::get('/materiels/{id}/historique', [HistoriqueMaterielController::class, 'index'])->name('historique.index');
-//Route::post('/materiels/{id}/historique', [HistoriqueMaterielController::class, 'store'])->name('historique.store');
-
-//Route::get('/historique-info', [HistoriqueMaterielController::class, 'index'])->name('historique.info');
-
-
-
-//Route::get('/materiels/{id}/historique', [HistoriqueMaterielController::class, 'index'])->name('materiels.historique');
-
-//Route::delete('/materiels/{id}', [InformatiqueController::class, 'destroy'])->name('materiels.destroy');
-
-
-
-
 // Route GET pour afficher les détails du matériel
 Route::get('/materiels/{id}', [MaterielController::class, 'show'])->name('materiels.show');
 
@@ -151,10 +132,6 @@ Route::post('/materiels/{id}/ajouter-informations', [MaterielController::class, 
 
 Route::get('/materiels/{id}/fin', [MaterielController::class, 'fin'])->name('materiels.fin');
 
-
-//Route::get('/logs', function () {
- //   return view('Logs');
-//})->name('materiels');
 
 Route::get('/roulants', [RoulantController::class, 'create'])->name('roulants.create');
 Route::post('/roulants', [RoulantController::class, 'store'])->name('roulants.store');
@@ -347,14 +324,16 @@ Route::get('/detenteurs/{id}/edit', [DetenteurRoulantController::class, 'edit'])
 
 // Route pour mettre à jour le détenteur
 Route::put('/detenteurs/{id}', [DetenteurRoulantController::class, 'update'])->name('detenteur.update3');
+Route::post('/detenteur/update/{id}', [DetenteurRoulantController::class, 'update']);
 
 
+ 
 Route::get('/EditDetenteurRoulant/{id}', [DetenteurRoulantController::class, 'edit'])->name('EditDetenteurRoulant');
 Route::post('/EditDetenteurRoulant/{id}/update', [DetenteurRoulantController::class, 'update'])->name('EditDetenteurRoulant.update');
 Route::get('/detenteur/{id}/edit', [DetenteurRoulantController::class, 'edit'])->name('detenteur.edit');
 
 Route::get('/detenteur/{id}/edit', [MaterielController::class, 'edite'])->name('detenteur.edite');
-Route::put('/detenteur/update/{id}', [MaterielController::class, 'updateFin'])->name('detenteur.update4');
+Route::post('/detenteur/update/{id}', [MaterielController::class, 'updateFin'])->name('detenteur.update4');
 Route::put('/suivimateriels/{id}', [SuiviMaterielController::class, 'update'])->name('suivimateriels.update');
 
 Route::get('/liste-globale', [ListeGlobalController::class, 'index'])->name('liste.globale');

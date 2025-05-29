@@ -82,16 +82,32 @@ class DetenteurRoulantController extends Controller {
     //Mettre à jour les informations du détenteur
     public function update(Request $request, $id)
     {
+        $validated = $request->validate([
+            'date' => 'required|date',
+            'nom' => 'required|string|max:255',
+            'organisations' => 'required|string|max:255',
+            'contact' => 'required|string|max:255',
+            'nombre' => 'required|integer',
+            'situation' => 'required|string|max:255',
+            'date_retour' => 'nullable|date',
+            'observation' => 'nullable|string',
+        ]);
+       
+        $detenteur = DetenteurRoulant::findOrFail($id);
+        // Mise à jour des champs
+            $detenteur->date = $request->date;
+            $detenteur->nom = $request->nom;
+            $detenteur->organisations = $request->organisations;
+            $detenteur->contact = $request->contact;
+            $detenteur->nombre = $request->nombre;
+            $detenteur->situation = $request->situation;
+            $detenteur->date_retour = $request->date_retour;
+            $detenteur->observation = $request->observation;
 
-        try {
-            $detenteur = DetenteurRoulant::findOrFail($id);
-            $detenteur->update($request->all());
+            $detenteur->save();
 
-            return response()->json(['success' => 'Modification enregistrée avec succès !']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erreur lors de la modification : ' . $e->getMessage()], 500);
-        }
-        
+            // Réponse JSON de succès
+            return response()->json(['success' => 'Modification enregistrée avec succès']);
     }
 
 }
