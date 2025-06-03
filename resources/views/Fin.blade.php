@@ -80,20 +80,9 @@
                     <td>{{ $item->date_retour }}</td>
                     <td>{{ $item->observation }}</td>
                     <td>
-                    <button type="button" class="btn btn-primary btnEdit" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#modaleModifierHistorique"
-                        data-id="{{ $item->id }}" 
-                        data-nom="{{ $item->nom }}"
-                        data-organisme="{{ $item->organisme }}"
-                        data-contact="{{ $item->contact }}"
-                        data-nombre="{{ $item->nombre }}"
-                        data-situation="{{ $item->situation }}"
-                        data-date="{{ $item->date }}"
-                        data-date_retour="{{ $item->date_retour }}"
-                        data-observation="{{ $item->observation }}">
+                        <a href="{{ route('detenteurs.editFin', $item->id) }}" class="btn btn-sm btn-primary">
                             Modifier
-                    </button>
+                        </a>
                     </td> <!-- Le bouton Modifier est dans la dernière colonne -->
                 </tr>
                 @endforeach
@@ -106,67 +95,6 @@
         <a href="{{ route('materiels.index') }}" class="btn btn-primary btn-lg">Retour à la liste</a>
     </div>
 </div>
-<!-- Modale pour la modification -->
-<div class="modal fade" id="modaleModifierHistorique" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modifier les informations</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formModif">
-                        <input type="hidden" id="editId">
-                        <div class="mb-3">
-                            <label for="editNom" class="form-label">Nom</label>
-                            <input type="text" id="editNom" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editOrganisme" class="form-label">Organisations</label>
-                            <input type="text" id="editOrganisme" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editContact" class="form-label">Contact</label>
-                            <input type="text" id="editContact" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editNombre" class="form-label">Nombre</label>
-                            <input type="number" id="editNombre" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editSituation" class="form-label">Situation</label>
-                            <input type="text" id="editSituation" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDateRetour" class="form-label">Date de Retour</label>
-                            <input type="date" id="editDateRetour" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editObservation" class="form-label">Observation</label>
-                            <textarea id="editObservation" class="form-control" rows="2"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Modifier</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btnEdit').forEach(button => {
-        button.addEventListener('click', function() {
-            document.getElementById('editId').value = this.getAttribute('data-id');
-            document.getElementById('editNom').value = this.getAttribute('data-nom');
-            document.getElementById('editOrganisme').value = this.getAttribute('data-organisme');
-            document.getElementById('editContact').value = this.getAttribute('data-contact');
-            document.getElementById('editNombre').value = this.getAttribute('data-nombre');
-            document.getElementById('editSituation').value = this.getAttribute('data-situation');
-            document.getElementById('editDateRetour').value = this.getAttribute('data-date_retour');
-            document.getElementById('editObservation').value = this.getAttribute('data-observation');
-        });
-    });
-});
-</script>
+
 @endsection
 

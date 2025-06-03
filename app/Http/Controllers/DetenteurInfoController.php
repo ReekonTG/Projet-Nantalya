@@ -60,8 +60,11 @@ public function store(Request $request, $id)
         return view('DetenteurFicheInfo', compact('materiel', 'detenteurs', 'personnels'));
     }
 
-  
-  
+    public function edit($id)
+        {
+            $detenteur = DetenteurInfo::findOrFail($id);
+            return view('EditDetenteurInfo', compact('detenteur'));
+        }
 
     // Supprimer un détenteur
     public function destroy($id)
@@ -73,14 +76,22 @@ public function store(Request $request, $id)
     }
 
     public function update(Request $request, $id)
-    {
-        try {
+        {
+            $request->validate([
+                'date' => 'required|date',
+                'nom' => 'required|string|max:255',
+                'organisations' => 'required|string|max:255',
+                'contact' => 'required|string|max:255',
+                'nombre' => 'required|integer',
+                'situation' => 'required|string|max:255',
+                'date_retour' => 'nullable|date',
+                'observation' => 'nullable|string',
+            ]);
+
             $detenteur = DetenteurInfo::findOrFail($id);
             $detenteur->update($request->all());
 
-            return response()->json(['success' => 'Modification enregistrée avec succès !']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erreur lors de la modification : ' . $e->getMessage()], 500);
+            return redirect()->route('detenteur-info.show', $detenteur->info_id)->with('success', 'Modification enregistrée avec succès !');
         }
-    }
+
 }

@@ -154,7 +154,7 @@ public function fin($id)
     $materiel = Materiel::findOrFail($id);  // Trouve le matériel selon l'ID
     $historique = HistoriqueMateriel::where('materiel_id', $id)->get(); // Récupère l'historique lié à ce matériel
 
-    return view('Fin', compact('materiel', 'historique'));
+    return view('fin', compact('materiel', 'historique'));
 }
 
 
@@ -244,18 +244,19 @@ public function updateFin(Request $request, $id)
 {
     $request->validate([
         'nom' => 'required|string|max:255',
-        'organisations' => 'required|string|max:255',
+        'organisme' => 'required|string|max:255',
         'contact' => 'required|string|max:255',
         'nombre' => 'required|integer',
         'situation' => 'required|string|max:255',
         'date_retour' => 'nullable|date',
-        'observation' => 'required|string',
+        'observation' => 'nullable|string',
     ]);
 
     $detenteur = HistoriqueMateriel::findOrFail($id);
     $detenteur->update($request->all());
 
-    return redirect()->route('materiels.index')->with('success', 'Détenteur mis à jour avec succès !');
+    return redirect()->route('materiels.fin', $detenteur->materiel_id)->with('success', 'Détenteur mis à jour avec succès !');
+
 }
 public function listePersonnels()
 {

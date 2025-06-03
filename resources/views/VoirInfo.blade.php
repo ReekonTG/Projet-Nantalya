@@ -129,9 +129,16 @@
                 <label for="date" class="form-label">Date</label>
                 <input type="date" id="date" name="date" class="form-control" required>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="nom" class="form-label">Nom</label>
-                <input type="text" id="nom" name="nom" class="form-control">
+                <select id="nom" name="nom" class="form-control" required>
+                    <option value="">  </option>
+                    @foreach($personnels as $personnel)
+                    <option value="{{ $personnel->nom }} {{ $personnel->prenom }}">
+                    {{ $personnel->nom }} {{ $personnel->prenom }}
+                    </option>
+                    @endforeach
+                </select>
             </div>
             <div class="col-md-4">
                 <label for="organisations" class="form-label">Organisme / Poste</label>

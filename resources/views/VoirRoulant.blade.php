@@ -85,27 +85,31 @@
                     </div>
                     <div class="col-md-3">
                         <label for="observation" class="form-label">Observation</label>
-                        <textarea id="observation" name="observation" class="form-control" rows="1" required></textarea>
+                        <textarea id="observation" name="observation" class="form-control" rows="1"></textarea>
                     </div>
                 </div>
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success btn-lg">Enregistrer</button>
                 </div>
-            
             <div class="text-center mt-4">
                 <a href="{{ route('roulants.detenteurs', $roulant->id) }}" class="btn btn-info mt-3">
                 Afficher les détenteurs</a>
             </div>
-    </form>
-</div>
+            </form>
+        </div>
+
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+        <strong>⚠️ Erreur :</strong> {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 
         <!-- Formulaire de suivi du roulant -->
         <div class="container">
-        <!-- Formulaire de suivi du roulant -->
         <div class="mt-5 shadow-lg p-4 bg-light rounded">
             <h3 class="text-center text-secondary mb-4">🚗 Ajouter un Suivi du Roulant</h3>
             <form action="{{ route('suiviRoulant.store', $roulant->id) }}" method="POST">
-
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-3">
@@ -149,7 +153,6 @@
                     <button type="submit" class="btn btn-success btn-lg">Ajouter Suivi</button>
                 </div>
                 <div class="text-center mt-4">
-                
                     <a href="{{ route('suiviRoulant.index', $roulant->id) }}" class="btn btn-info mt-3">Afficher Suivi</a>
                 </div>
             </form>

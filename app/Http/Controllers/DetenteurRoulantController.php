@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\DetenteurRoulant;
 use App\Models\Roulant;
+use App\Models\Personnel;
 use App\Models\InventaireRoulant;
 use Illuminate\Http\Request;
 
-class DetenteurRoulantController extends Controller {
-    
-    public function store(Request $request, Roulant $roulant) {
+class DetenteurRoulantController extends Controller
+{
+    public function store(Request $request, Roulant $roulant)
+    {
+        // Vérifier si le dernier détenteur a bien rempli la date de retour et l'observation
+        $dernierDetenteur = DetenteurRoulant::where('roulant_id', $roulant->id)->latest()->first();
+
+        if ($dernierDetenteur && (empty($dernierDetenteur->date_retour) || empty($dernierDetenteur->observation))) {
+            return redirect()->back()->with('error', 'Le matériel n\'est pas encore disponible (date de retour ou observation manquante).');
+        }
+
         $validated = $request->validate([
             'date' => 'required|date',
             'nom' => 'required|string|max:255',
@@ -24,62 +33,61 @@ class DetenteurRoulantController extends Controller {
         $validated['roulant_id'] = $roulant->id;
         DetenteurRoulant::create($validated);
 
-        return redirect()->back()->with('success', 'Informations supplémentaires enregistrées avec succès.');
+        return redirect()->route('roulants.detenteurs', ['id' => $roulant->id])
+                         ->with('success', 'Informations supplémentaires enregistrées avec succès.');
     }
 
-    public function show($id) {
-        $roulant = Roulant::findOrFail($id);
-        $detenteurs = DetenteurRoulant::where('roulant_id', $id)->get();
-        $personnels = \App\Models\Personnel::all(); // Récupérer les noms des personnels
-    
-        return view('VoirRoulant', compact('roulant', 'detenteurs','personnels'));
+    public function show($id)
+        {
+            $roulant = Roulant::findOrFail($id);
+            //$detenteurs = DetenteurRoulant::where('roulant_id', $id)->get();
+            $personnels = Personnel::all(); // ou ta logique pour récupérer les personnels
+
+            return view('voir_roulant', compact('roulant','personnels'));
+        }
+
+
+    public function inventaire()
+    {
+        // Utilise une relation dédiée 'dernierInventaire' dans le modèle Roulant
+        $roulants = Roulant::with('dernierInventaire')
+            ->select('id', 'numero_inventaire', 'designation', 'numero_serie', 'nature', 'utilisateurs', 'repere')
+            ->get();
+
+        return view('inventaire_roulant', compact('roulants'));
     }
 
-    public function inventaire() {
-        // Récupérer les roulants avec leurs derniers inventaires
-        $roulants = Roulant::with(['inventaireRoulants' => function($query) {
-            $query->latest()->first(); // Récupère la dernière situation enregistrée
-        }])->select('id', 'numero_inventaire', 'designation', 'numero_serie', 'nature', 'utilisateurs', 'repere')
-          ->get();
-
-        return view('InventaireRoulant', compact('roulants'));
-    }
-
-    public function ajouter(Request $request, $roulantId) {
-        // Vérifier si le roulant existe
+    public function ajouter(Request $request, $roulantId)
+    {
         $roulant = Roulant::find($roulantId);
         if (!$roulant) {
             return back()->with('error', 'Roulant introuvable.');
         }
-    
-        // Valider les données envoyées
+
         $validated = $request->validate([
             'annee' => 'required|integer',
             'situation' => 'required|string|max:255',
         ]);
-    
-        // Vérifier si la table `inventaire_roulants` est bien utilisée
+
         try {
             InventaireRoulant::create([
                 'roulant_id' => $roulantId,
                 'annee' => $validated['annee'],
                 'situation' => $validated['situation'],
             ]);
-    
+
             return redirect()->back()->with('success', 'Données enregistrées avec succès.');
         } catch (\Exception $e) {
             return back()->with('error', 'Erreur lors de l\'enregistrement : ' . $e->getMessage());
         }
     }
-    // Afficher le formulaire de modification
+
     public function edit($id)
     {
         $detenteur = DetenteurRoulant::findOrFail($id);
-        return view('EditDetenteurRoulant', compact('detenteur')); // Nouvelle vue
+        return view('EditDetenteurRoulant', compact('detenteur'));
     }
-    
 
-    //Mettre à jour les informations du détenteur
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -92,22 +100,11 @@ class DetenteurRoulantController extends Controller {
             'date_retour' => 'nullable|date',
             'observation' => 'nullable|string',
         ]);
-       
+
         $detenteur = DetenteurRoulant::findOrFail($id);
-        // Mise à jour des champs
-            $detenteur->date = $request->date;
-            $detenteur->nom = $request->nom;
-            $detenteur->organisations = $request->organisations;
-            $detenteur->contact = $request->contact;
-            $detenteur->nombre = $request->nombre;
-            $detenteur->situation = $request->situation;
-            $detenteur->date_retour = $request->date_retour;
-            $detenteur->observation = $request->observation;
+        $detenteur->update($validated);
 
-            $detenteur->save();
-
-            // Réponse JSON de succès
-            return response()->json(['success' => 'Modification enregistrée avec succès']);
+        return redirect()->route('roulants.detenteurs', ['id' => $detenteur->roulant_id])
+                         ->with('success', 'Modification enregistrée avec succès.');
     }
-
 }

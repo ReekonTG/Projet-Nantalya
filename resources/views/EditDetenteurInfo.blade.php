@@ -25,7 +25,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('EditDetenteurRoulant.update', $detenteur->id) }}" method="POST">
+            <form action="{{ route('detenteur.update', $detenteur->id) }}" method="POST">
                 @csrf
 
                 <div class="row mb-3">
@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('roulants.detenteurs',['id' => $detenteur->roulant_id]) }}" class="btn btn-secondary">
+                    <a href="{{route('detenteur-info.show', $detenteur->info_id) }}" class="btn btn-secondary">
                         <i class="bi bi-arrow-left-circle"></i> Annuler
                     </a>
                     <button type="submit" class="btn btn-success">

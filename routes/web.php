@@ -83,7 +83,15 @@ Route::get('/tiroir', [MaterielController::class, 'showTiroirForm'])->name('Tiro
 
 
 // Route pour afficher le formulaire de modification du matériel
+Route::put('/materiels//detenteur/{id}/update', [MaterielController::class, 'updateFin'])->name('detenteur.updatemateriel');
+Route::get('/materiels/{id}/fin', [MaterielController::class, 'fin'])->name('materiels.fin');
+
 Route::get('/materiels/{id}/edit', [MaterielController::class, 'edit'])->name('materiels.edit');
+
+Route::get('/materiels/detenteurs/{id}/edit', [MaterielController::class, 'edite'])->name('detenteurs.editFin');
+
+
+
 
 // Route pour mettre à jour le matériel
 Route::put('/materiels/{id}', [MaterielController::class, 'update'])->name('materiels.update');
@@ -133,6 +141,7 @@ Route::post('/materiels/{id}/ajouter-informations', [MaterielController::class, 
 Route::get('/materiels/{id}/fin', [MaterielController::class, 'fin'])->name('materiels.fin');
 
 
+
 Route::get('/roulants', [RoulantController::class, 'create'])->name('roulants.create');
 Route::post('/roulants', [RoulantController::class, 'store'])->name('roulants.store');
 Route::get('/roulants/list', [RoulantController::class, 'index'])->name('roulants.list');
@@ -164,7 +173,7 @@ Route::get('/roulants/{id}/fiche', [DetenteurRoulantController::class, 'show'])-
 
 
 // ✅ Route pour afficher le formulaire d'édition d'un détenteur
-Route::get('/detenteurs/{id}/edit', [DetenteurRoulantController::class, 'edit'])->name('detenteur.edit');
+//Route::get('/detenteurs/{id}/edit', [DetenteurRoulantController::class, 'edit'])->name('detenteur.edit');
 
 // ✅ Route pour mettre à jour les informations d'un détenteur
 Route::put('/detenteurs/{id}', [DetenteurRoulantController::class, 'update'])->name('detenteur.update');
@@ -225,7 +234,8 @@ Route::put('/inventaire/{id}', [InventaireInfoController::class, 'update'])->nam
 Route::get('/materiels/liste-info', [InformatiqueController::class, 'listeInfo'])->name('materiels.listeInfo');
 
 
-
+Route::get('/detenteur/{id}/edit', [DetenteurInfoController::class, 'edit'])->name('detenteur.edit');
+Route::post('/detenteur/{id}/update', [DetenteurInfoController::class, 'update'])->name('detenteur.update');
 
 Route::post('/detenteur-info/{id}', [DetenteurInfoController::class, 'store'])->name('detenteur-info.store');
 Route::get('/detenteur-info/{id}', [DetenteurInfoController::class, 'show'])->name('detenteur-info.show');
@@ -316,25 +326,28 @@ Route::get('/informatique', [InformatiqueController::class, 'listePersonnels'])-
 Route::get('/materiels/personnels', [MaterielController::class, 'listePersonnels'])->name('materiels.personnels');
 Route::get('/roulants', [RoulantController::class, 'listePersonnels'])->name('roulants.create');
 Route::get('/acceuil', [AcceuilController::class, 'index']);
-Route::post('/detenteur/update/{id}', [DetenteurInfoController::class, 'update'])->name('detenteur.update2');
+//Route::post('/detenteur/update/{id}', [DetenteurInfoController::class, 'update'])->name('detenteur.update2');
 
 
 // Route pour afficher le formulaire de modification d'un détenteur
-Route::get('/detenteurs/{id}/edit', [DetenteurRoulantController::class, 'edit'])->name('detenteur.edit');
+//Route::get('/detenteurs/{id}/edit', [DetenteurRoulantController::class, 'edit'])->name('detenteur.edit');
 
 // Route pour mettre à jour le détenteur
 Route::put('/detenteurs/{id}', [DetenteurRoulantController::class, 'update'])->name('detenteur.update3');
 Route::post('/detenteur/update/{id}', [DetenteurRoulantController::class, 'update']);
 
-
  
-Route::get('/EditDetenteurRoulant/{id}', [DetenteurRoulantController::class, 'edit'])->name('EditDetenteurRoulant');
+Route::get('/EditDetenteurRoulant/{id}', [DetenteurRoulantController::class, 'edit'])->name('EditDetenteurRoulant.edit');
 Route::post('/EditDetenteurRoulant/{id}/update', [DetenteurRoulantController::class, 'update'])->name('EditDetenteurRoulant.update');
-Route::get('/detenteur/{id}/edit', [DetenteurRoulantController::class, 'edit'])->name('detenteur.edit');
+Route::get('/roulants/detenteur/{id}/edit', [DetenteurRoulantController::class, 'edit'])->name('detenteur.editroulant');
 
 Route::get('/detenteur/{id}/edit', [MaterielController::class, 'edite'])->name('detenteur.edite');
-Route::post('/detenteur/update/{id}', [MaterielController::class, 'updateFin'])->name('detenteur.update4');
 Route::put('/suivimateriels/{id}', [SuiviMaterielController::class, 'update'])->name('suivimateriels.update');
 
 Route::get('/liste-globale', [ListeGlobalController::class, 'index'])->name('liste.globale');
 Route::get('/liste-globale/export', [ListeGlobalController::class, 'exportInventaire'])->name('liste.globale.export');
+
+Route::get('/detenteur/{id}/edit', [DetenteurInfoController::class, 'edit'])->name('detenteur.edit');
+Route::post('/detenteur/{id}/update', [DetenteurInfoController::class, 'update'])->name('detenteur.update');
+
+Route::get('/materiels/detenteurs/{id}/edit', [MaterielController::class, 'edite'])->name('detenteurs.editFin');
